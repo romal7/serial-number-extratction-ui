@@ -3,29 +3,194 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Upload Image for Serial Number Detection</title>
+    <title>Serial Number Detection</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f7fc;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            max-width: 960px;
+            width: 100%;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        h1 {
+            color: #007BFF;
+            font-size: 36px;
+            margin-bottom: 30px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        label {
+            font-size: 18px;
+            color: #555;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        input[type="file"] {
+            font-size: 16px;
+            padding: 10px;
+            margin-top: 10px;
+            width: 60%;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+            transition: 0.3s;
+        }
+
+        input[type="file"]:hover {
+            background-color: #e2e6ea;
+        }
+
+        button {
+            background-color: #28a745;
+            color: white;
+            font-size: 18px;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        button:hover {
+            background-color: #218838;
+            transform: scale(1.05);
+        }
+
+        h2 {
+            font-size: 24px;
+            color: #28a745;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+
+        h3 {
+            font-size: 20px;
+            color: #333;
+            margin-top: 20px;
+            font-weight: normal;
+        }
+
+        img {
+            max-width: 90%;
+            border-radius: 10px;
+            margin-top: 15px;
+            transition: transform 0.3s ease;
+        }
+
+        img:hover {
+            transform: scale(1.05);
+        }
+
+        .cropped-images {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .cropped-images div {
+            margin: 10px;
+            width: 45%;
+            max-width: 400px;
+            transition: transform 0.3s ease;
+        }
+
+        .cropped-images div:hover {
+            transform: scale(1.05);
+        }
+
+        .footer {
+            font-size: 14px;
+            color: #888;
+            margin-top: 40px;
+        }
+
+        .footer a {
+            text-decoration: none;
+            color: #007BFF;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+                border-radius: 10px;
+            }
+
+            input[type="file"] {
+                width: 80%;
+            }
+
+            .cropped-images div {
+                width: 80%;
+            }
+
+            img {
+                max-width: 100%;
+            }
+
+            button {
+                font-size: 16px;
+                padding: 10px 20px;
+            }
+        }
+
+    </style>
 </head>
 <body>
-    <h1>Serial Number Detection</h1>
 
-    <form action="/upload" method="POST" enctype="multipart/form-data">
-        <label for="file">Upload Image:</label>
-        <input type="file" name="file" id="file" required>
-        <br><br>
-        <button type="submit">Upload and Process</button>
-    </form>
+    <div class="container">
+        <h1>Serial Number Detection</h1>
 
-    {% if serial_number %}
-        <h2>Detected Serial Number: {{ serial_number }}</h2>
+        <form action="/upload" method="POST" enctype="multipart/form-data">
+            <label for="file">Upload Image:</label>
+            <input type="file" name="file" id="file" required>
+            <br>
+            <button type="submit">Upload and Process</button>
+        </form>
 
-        <h3>Original Image:</h3>
-        <img src="{{ url_for('static', filename='original_image.png') }}" alt="Original Image" width="400">
+        {% if serial_number %}
+            <h2>Detected Serial Number: {{ serial_number }}</h2>
 
-        {% for cropped_image in cropped_images %}
-            <h3>Cropped Serial Number Region:</h3>
-            <img src="{{ url_for('static', filename=cropped_image.split('static/')[-1]) }}" alt="Cropped Image" width="400">
-        {% endfor %}
-    {% endif %}
+            <h3>Original Image:</h3>
+            <img src="{{ url_for('static', filename='original_image.png') }}" alt="Original Image">
+
+            <div class="cropped-images">
+                {% for cropped_image in cropped_images %}
+                    <div>
+                        <h3>Cropped Serial Number Region:</h3>
+                        <img src="{{ url_for('static', filename=cropped_image.split('static/')[-1]) }}" alt="Cropped Image">
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <div class="footer">
+            <p>&copy; 2024 <a href="#">Serial Number Detection App</a>. All Rights Reserved.</p>
+        </div>
+    </div>
 
 </body>
 </html>
