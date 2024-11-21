@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Image for Serial Number Detection</title>
+</head>
+<body>
+    <h1>Serial Number Detection</h1>
+
+    <form action="/upload" method="POST" enctype="multipart/form-data">
+        <label for="file">Upload Image:</label>
+        <input type="file" name="file" id="file" required>
+        <br><br>
+        <button type="submit">Upload and Process</button>
+    </form>
+
+    {% if serial_number %}
+        <h2>Detected Serial Number: {{ serial_number }}</h2>
+
+        <h3>Original Image:</h3>
+        <img src="{{ url_for('static', filename='original_image.png') }}" alt="Original Image" width="400">
+
+        {% for cropped_image in cropped_images %}
+            <h3>Cropped Serial Number Region:</h3>
+            <img src="{{ url_for('static', filename=cropped_image.split('static/')[-1]) }}" alt="Cropped Image" width="400">
+        {% endfor %}
+    {% endif %}
+
+</body>
+</html>
